@@ -10,8 +10,8 @@ This is an Open Source gui kit for flutter
 - General
   - Button
     - **Flat Button**
-  - Data Entry
-    - *Check Box*
-    - *Single Selection*
-    - *Single Selection Group*
-    - *Multiple Selection Group*
+- Data Entry
+  - *Check Box*
+  - *Single Selection*
+  - *Single Selection Group*
+  - *Multiple Selection Group*
