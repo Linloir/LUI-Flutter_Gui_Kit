@@ -1,7 +1,7 @@
 /*
  * @Author       : Linloir
  * @Date         : 2022-04-09 10:21:49
- * @LastEditTime : 2022-04-09 14:08:26
+ * @LastEditTime : 2022-04-09 15:56:54
  * @Description  : Check Box
  */
 
@@ -16,6 +16,7 @@ class LuiCheckBox extends StatefulWidget {
     this.enabled,
     this.accentColorEnabled,
     this.fillColorEnabled,
+    this.fallOnColorEnabled,
     this.backgroundColorEnabled,
     this.splashColor,
     this.hoverColor,
@@ -31,6 +32,7 @@ class LuiCheckBox extends StatefulWidget {
   final bool? enabled;
   final Color? accentColorEnabled;
   final Color? fillColorEnabled;
+  final Color? fallOnColorEnabled;
   final Color? backgroundColorEnabled;
   final Color? splashColor;
   final Color? hoverColor;
@@ -49,6 +51,7 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
   late bool _enabled;
   late Color _accentColorEnabled;
   late Color _fillColorEnabled;
+  late Color _fallOnColorEnabled;
   late Color _backgroundColorEnabled;
   late Color _fillColorDisabled;
   late Color _backgroundColorDisabled;
@@ -60,8 +63,9 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
 
   void _initParameters() {
     _enabled = widget.enabled ?? true;
-    _fillColorEnabled = widget.fillColorEnabled ?? widget.accentColorEnabled ?? Colors.blue;
-    _accentColorEnabled = widget.accentColorEnabled ?? widget.fillColorEnabled ?? Colors.blue;
+    _fillColorEnabled = widget.fillColorEnabled ?? Colors.grey;
+    _accentColorEnabled = widget.accentColorEnabled ?? Colors.blue;
+    _fallOnColorEnabled = widget.fallOnColorEnabled ?? _accentColorEnabled;
     _backgroundColorEnabled = widget.backgroundColorEnabled ?? Colors.white.withOpacity(0);
     _fillColorDisabled = widget.fillColorDisabled ?? Colors.grey[300]!;
     _backgroundColorDisabled = widget.backgroundColorDisabled ?? Colors.white.withOpacity(0);
@@ -80,29 +84,31 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
 
   @override
   void didUpdateWidget(LuiCheckBox oldWidget) {
+    if(widget.value == oldWidget.value && widget.enabled == oldWidget.enabled) {
+      super.didUpdateWidget(oldWidget);
+      return;
+    }
     _initParameters();
-    if(oldWidget.value != widget.value) {
-      if(!widget.value) {
-        if(mounted){
-          setState(() {
-            _fillColor = _enabled ? _fillColorEnabled : _fillColorDisabled;
-          });}
-        _controller.reverse();
-      }
-      else {
-        if(mounted) {
-          setState(() {
-            _fillColor = _enabled ? _accentColorEnabled : _fillColorDisabled;
-          });
-        }
-        _controller.forward().then((value) => Future.delayed(const Duration(milliseconds: 375))).then((value) {
-          if(mounted) {
-            setState(() {
-              _fillColor = _enabled ? _fillColorEnabled : _fillColorDisabled;
-            });
-          }
+    if(!widget.value) {
+      if(mounted){
+        setState(() {
+          _fillColor = _enabled ? _fillColorEnabled : _fillColorDisabled;
+        });}
+      _controller.reverse();
+    }
+    else {
+      if(mounted) {
+        setState(() {
+          _fillColor = _enabled ? _accentColorEnabled : _fillColorDisabled;
         });
       }
+      _controller.forward().then((value) => Future.delayed(const Duration(milliseconds: 375))).then((value) {
+        if(mounted) {
+          setState(() {
+            _fillColor = _enabled ? _fallOnColorEnabled : _fillColorDisabled;
+          });
+        }
+      });
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -235,7 +241,7 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
 }
 
 class _HoleClipper extends CustomClipper<Path> {
-  _HoleClipper({
+  const _HoleClipper({
     required this.borderRadius,
     required this.borderWidth,
     required this.holeSize,
@@ -280,7 +286,7 @@ class _HoleClipper extends CustomClipper<Path> {
 }
 
 class _BackgoundClipper extends CustomClipper<Path> {
-  _BackgoundClipper({
+  const _BackgoundClipper({
     required this.borderRadius,
     required this.borderWidth,
     required this.holeSize,
