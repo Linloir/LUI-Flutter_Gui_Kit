@@ -1,7 +1,7 @@
 /*
  * @Author       : Linloir
  * @Date         : 2022-04-09 10:21:49
- * @LastEditTime : 2022-04-09 15:56:54
+ * @LastEditTime : 2022-04-09 16:20:17
  * @Description  : Check Box
  */
 
@@ -260,23 +260,19 @@ class _HoleClipper extends CustomClipper<Path> {
   RRect _innerRect(Size size) {
     double holeWidth = (size.width - 2 * borderWidth) * holeSize;
     double holeHeight = (size.height - 2 * borderWidth) * holeSize;
-    double left = (size.width - holeWidth) / 2;
-    double top = (size.height - holeHeight) / 2;
     double ratio = (sqrt(pow(holeWidth, 2) + pow(holeHeight, 2)) / sqrt(pow(size.width, 2) + pow(size.height, 2)));
     double radius = borderWidth < borderRadius ? (borderRadius - borderWidth) * holeSize : borderRadius * ratio;
     return RRect.fromRectAndRadius(
-      Rect.fromLTWH(left, top, holeWidth, holeHeight),
+      Alignment.center.inscribe(Size(holeWidth, holeHeight), Rect.fromLTRB(0, 0, size.width, size.height)),
       Radius.circular(radius),
     );
   }
 
   @override
   Path getClip(Size size) {
-    final path = Path();
-    path.addRRect(_outerRect(size));
-    path.addRRect(_innerRect(size));
-    path.fillType = PathFillType.evenOdd;
-    return path;
+    return Path() ..fillType = PathFillType.evenOdd
+                  ..addRRect(_outerRect(size))
+                  ..addRRect(_innerRect(size));
   }
 
   @override
