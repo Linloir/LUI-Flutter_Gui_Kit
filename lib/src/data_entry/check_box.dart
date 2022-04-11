@@ -1,7 +1,7 @@
 /*
  * @Author       : Linloir
  * @Date         : 2022-04-09 10:21:49
- * @LastEditTime : 2022-04-09 16:20:17
+ * @LastEditTime : 2022-04-10 17:53:26
  * @Description  : Check Box
  */
 
@@ -25,7 +25,8 @@ class LuiCheckBox extends StatefulWidget {
     this.borderRadius,
     this.borderWidth,
     this.contentPadding,
-    this.onChanged
+    this.duration,
+    this.onChanged,
   }) : super(key: key);
 
   final bool value;
@@ -41,6 +42,7 @@ class LuiCheckBox extends StatefulWidget {
   final double? borderRadius;
   final double? borderWidth;
   final EdgeInsets? contentPadding;
+  final Duration? duration;
   final void Function(bool value)? onChanged;
 
   @override
@@ -57,6 +59,7 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
   late Color _backgroundColorDisabled;
   late double _borderWidth;
   late EdgeInsets _contentPadding;
+  late Duration _duration;
 
   late final AnimationController _controller;
   late Color _fillColor;
@@ -71,24 +74,25 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
     _backgroundColorDisabled = widget.backgroundColorDisabled ?? Colors.white.withOpacity(0);
     _borderWidth = widget.borderWidth ?? 2.0;
     _contentPadding = widget.contentPadding ?? const EdgeInsets.all(8.0);
+    _duration = widget.duration ?? const Duration(milliseconds: 750);
   }
 
   @override
   void initState() {
     super.initState();
     _initParameters();
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+    _controller = AnimationController(vsync: this, duration: _duration);
     _controller.value = widget.value ? 1 : 0;
-    _fillColor = _enabled ? _fillColorEnabled : _fillColorDisabled; 
+    _fillColor = _enabled ? widget.value ? _fallOnColorEnabled : _fillColorEnabled : _fillColorDisabled; 
   }
 
   @override
   void didUpdateWidget(LuiCheckBox oldWidget) {
+    _initParameters();
     if(widget.value == oldWidget.value && widget.enabled == oldWidget.enabled) {
       super.didUpdateWidget(oldWidget);
       return;
     }
-    _initParameters();
     if(!widget.value) {
       if(mounted){
         setState(() {
@@ -103,7 +107,7 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
         });
       }
       _controller.forward().then((value) => Future.delayed(const Duration(milliseconds: 375))).then((value) {
-        if(mounted) {
+        if(mounted && widget.value) {
           setState(() {
             _fillColor = _enabled ? _fallOnColorEnabled : _fillColorDisabled;
           });
@@ -155,7 +159,7 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
                         child: AnimatedContainer(
                           width: double.infinity,
                           height: double.infinity,
-                          duration: const Duration(milliseconds: 750),
+                          duration: _duration,
                           color: _enabled ? _backgroundColorEnabled : _backgroundColorDisabled,
                         ),
                       );
@@ -184,7 +188,7 @@ class _LuiCheckBoxState extends State<LuiCheckBox> with TickerProviderStateMixin
                       child: AnimatedContainer(
                         width: double.infinity,
                         height: double.infinity,
-                        duration: const Duration(milliseconds: 750),
+                        duration: _duration,
                         color: _fillColor,
                       ),
                     );
