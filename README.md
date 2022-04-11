@@ -16,3 +16,6 @@ This is an Open Source gui kit for flutter
   - *Single Selection*
   - *Single Selection Group*
   - *Multiple Selection Group*
+- Data Display
+  - **Badge**
+  - **Progress Bar**
