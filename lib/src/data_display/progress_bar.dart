@@ -1,7 +1,7 @@
 /*
  * @Author       : Linloir
  * @Date         : 2022-04-11 14:14:34
- * @LastEditTime : 2022-04-11 14:14:35
+ * @LastEditTime : 2022-04-12 11:03:34
  * @Description  : 
  */
 
@@ -27,7 +27,9 @@ class _LuiLinearProgressBar extends State<LuiLinearProgressBar> {
       builder: (context, constraints) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(constraints.maxHeight / 2),
-          child: Container(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOutCubicEmphasized,
             decoration: BoxDecoration(
               color: widget.backgroundColor ?? Colors.grey[100]!,
               borderRadius: BorderRadius.circular(constraints.maxHeight / 2),
@@ -37,7 +39,7 @@ class _LuiLinearProgressBar extends State<LuiLinearProgressBar> {
             width: double.infinity,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 750),
-              curve: Curves.easeInOutExpo,
+              curve: Curves.easeInOutCubicEmphasized,
               width: constraints.maxWidth * widget.progress,
               decoration: BoxDecoration(
                 color: widget.highlightColor ?? Colors.teal[300]!,
