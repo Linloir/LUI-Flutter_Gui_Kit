@@ -11,6 +11,8 @@ This is an Open Source gui kit for flutter
 - General
   - Button
     - **Flat Button**
+  - Layout
+    - **Persistent Header Delegate**
 - Data Entry
   - **Check Box**
   - *Single Selection*
