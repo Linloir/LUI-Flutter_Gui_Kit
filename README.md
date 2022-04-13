@@ -13,6 +13,7 @@ This is an Open Source gui kit for flutter
     - **Flat Button**
   - Layout
     - **Persistent Header Delegate**
+    - **MultiPage Skeleton**
 - Data Entry
   - **Check Box**
   - *Single Selection*
