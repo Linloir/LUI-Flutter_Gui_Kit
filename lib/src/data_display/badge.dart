@@ -1,7 +1,7 @@
 /*
  * @Author       : Linloir
  * @Date         : 2022-04-10 15:50:55
- * @LastEditTime : 2022-04-10 17:00:14
+ * @LastEditTime : 2022-05-12 15:18:47
  * @Description  : Badge
  */
 
@@ -25,17 +25,17 @@ class LuiFlatBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius ?? double.infinity),
-      child: AnimatedSize(
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOutCubicEmphasized,
-        alignment: Alignment.centerLeft,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          padding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius ?? double.infinity),
-            color: backgroundColor,
-          ),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        padding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius ?? double.infinity),
+          color: backgroundColor,
+        ),
+        child: AnimatedSize(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOutCubicEmphasized,
+          alignment: Alignment.centerLeft,
           child: AnimatedSwitcher(
             switchInCurve: Curves.easeInOutCubicEmphasized,
             duration: const Duration(milliseconds: 750),
